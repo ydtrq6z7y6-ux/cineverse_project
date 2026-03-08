@@ -8,12 +8,14 @@ This project extends the CineVerse festival movie dataset with additional data f
 - requests
 - pandas
 - python-dotenv
+- pytest (for testing)
+- pytest-mock (for testing)
 
 ## Setup
 
 1. Install dependencies:
    ```
-   pip install requests pandas python-dotenv
+   pip install requests pandas python-dotenv pytest pytest-mock
    ```
 
 2. Get an API key from [OMDb API](http://www.omdbapi.com/apikey.aspx)
@@ -37,6 +39,18 @@ This will:
 - Fetch additional data from OMDb API
 - Save extended data to `movies_extended.xml`
 - Display top 10 movies by IMDb rating
+
+## Testing
+
+Run the tests:
+```
+pytest
+```
+
+Or run with coverage:
+```
+pytest --cov=main --cov-report=html
+```
 
 ## Output
 
