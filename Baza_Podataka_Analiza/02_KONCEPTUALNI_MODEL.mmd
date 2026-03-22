@@ -1,0 +1,55 @@
+-- Konceptualni ER Dijagram (Mermaid format)
+-- Kopirajte ovaj sadržaj u Mermaid editor na https://mermaid.live/
+
+erDiagram
+    MOVIES ||--|| DIRECTORS : "directed_by"
+    MOVIES ||--|| COUNTRIES : "produced_in"
+    MOVIES }o--|| GENRES : "has"
+    MOVIES }o--|| ACTORS : "stars"
+    
+    MOVIES {
+        int movie_id PK "Jedinstveni identifikator"
+        string title "Naslov filma"
+        int year "Godina izdanja"
+        int duration "Trajanje u minutama"
+        decimal imdb_rating "IMDb ocena"
+        int imdb_votes "Broj IMDb glasova"
+        decimal budget "Budžet filma"
+        decimal box_office "Prihod od bioskopa"
+        text synopsis "Kratak opis filma"
+    }
+    
+    DIRECTORS {
+        int director_id PK "Jedinstveni identifikator"
+        string first_name "Ime režisera"
+        string last_name "Prezime režisera"
+        string country_of_origin "Zemlja porekla"
+        int birth_year "Godina rođenja"
+    }
+    
+    COUNTRIES {
+        int country_id PK "Jedinstveni identifikator"
+        string country_name "Naziv zemlje"
+        string region "Regija"
+    }
+    
+    GENRES {
+        int genre_id PK "Jedinstveni identifikator"
+        string genre_name "Naziv žanra"
+    }
+    
+    ACTORS {
+        int actor_id PK "Jedinstveni identifikator"
+        string first_name "Ime glumca"
+        string last_name "Prezime glumca"
+        string country_of_birth "Zemlja rođenja"
+        int birth_year "Godina rođenja"
+    }
+
+-- =====================================================
+-- NAPOMENA: Za korišćenje ovog dijagrama:
+-- 1. Poseti https://mermaid.live/
+-- 2. Kopiraj ceo sadržaj ovog fajla (od erDiagram nadole)
+-- 3. Zalepi u editor
+-- 4. Klikni "Copy SVG" ili "Download" za PNG/SVG
+-- =====================================================

@@ -1,0 +1,81 @@
+-- Logički Model Baze Podataka (Mermaid format)
+-- Kopirajte ovaj sadržaj u Mermaid editor na https://mermaid.live/
+
+graph TB
+    subgraph CORE["🎬 CORE ENTITETI"]
+        M["<b>MOVIES</b><br/>─────────────────<br/>🔑 movie_id: INT<br/>📝 title: VARCHAR255<br/>📅 year: INT<br/>⏱️ duration: INT<br/>⭐ imdb_rating: DECIMAL3,1<br/>📊 imdb_votes: INT<br/>💰 budget: DECIMAL15,2<br/>💵 box_office: DECIMAL15,2<br/>📄 synopsis: TEXT<br/>🔗 director_id: INT<br/>🔗 country_id: INT"]
+        
+        D["<b>DIRECTORS</b><br/>─────────────────<br/>🔑 director_id: INT<br/>📝 first_name: VARCHAR100<br/>📝 last_name: VARCHAR100<br/>🌍 country_of_origin: VARCHAR100<br/>📅 birth_year: INT"]
+        
+        C["<b>COUNTRIES</b><br/>─────────────────<br/>🔑 country_id: INT<br/>📝 country_name: VARCHAR100*<br/>📍 region: VARCHAR100"]
+    end
+    
+    subgraph REF["📚 REFERENTNE TABELE"]
+        G["<b>GENRES</b><br/>─────────────────<br/>🔑 genre_id: INT<br/>📝 genre_name: VARCHAR50*<br/>📄 description: VARCHAR255"]
+        
+        A["<b>ACTORS</b><br/>─────────────────<br/>🔑 actor_id: INT<br/>📝 first_name: VARCHAR100<br/>📝 last_name: VARCHAR100<br/>🌍 country_of_birth: VARCHAR100<br/>📅 birth_year: INT"]
+    end
+    
+    subgraph JOIN["🔗 POVEZUJUĆE TABELE"]
+        MG["<b>MOVIE_GENRE</b><br/>─────────────────<br/>🔑 movie_id: INT<br/>🔑 genre_id: INT<br/>(M:N relacija)"]
+        
+        MA["<b>MOVIE_ACTOR</b><br/>─────────────────<br/>🔑 movie_id: INT<br/>🔑 actor_id: INT<br/>📝 role: VARCHAR100<br/>📊 billing_order: INT"]
+    end
+    
+    -- Relacije - 1:N
+    M -->|director_id FK| D
+    M -->|country_id FK| C
+    
+    -- Relacije - M:N
+    M -->|movie_id FK| MG
+    MG -->|genre_id FK| G
+    
+    M -->|movie_id FK| MA
+    MA -->|actor_id FK| A
+    
+    -- Legend
+    subgraph LEGEND["📖 LEGENDA"]
+        PK["🔑 = Primary Key"]
+        FK["🔗 = Foreign Key"]
+        UN["* = UNIQUE"]
+        NN["(ne može biti NULL)"]
+    end
+
+-- =====================================================
+-- KLJUČNE KARAKTERISTIKE LOGIČKOG MODELA:
+-- =====================================================
+
+-- 1. TIPOVI PODATAKA:
+--    • INT: Za sve ID-eve i brojeve (trajanje, godine)
+--    • VARCHAR(n): Za tekstualne vrednosti sa fiksnom dužinom
+--    • DECIMAL(15,2): Za novčane vrednosti (budžet, prihod)
+--    • DECIMAL(3,1): Za ocene (0.0-10.0)
+--    • TEXT: Za duže tekstualne vrednosti (synopsis, opis)
+
+-- 2. KLJUČEVI:
+--    • Primarni ključ (PK): Jedinstveno identifikuje svaki red
+--    • Strani ključ (FK): Povezuje tabele sa referentnom integritetom
+--    • UNIQUE: Za polja koja ne smeju imati duplikate (npr. country_name, genre_name)
+
+-- 3. RELACIJE:
+--    • 1:N: DIRECTORS → MOVIES, COUNTRIES → MOVIES
+--    • M:N: MOVIES ↔ GENRES (preko MOVIE_GENRE)
+--    • M:N: MOVIES ↔ ACTORS (preko MOVIE_ACTOR)
+
+-- 4. CONSTRAINTS:
+--    • CHECK: Ograničenja na vrednosti (npr. year >= 1895, rating >= 0 AND rating <= 10)
+--    • FOREIGN KEY: Referentni integritet sa ON DELETE i ON UPDATE opcijama
+--    • NOT NULL: Obavezni atributi
+--    • UNIQUE: Jedinstvene vrednosti
+
+-- 5. INDEKSI:
+--    • Kreirani na kolonama koje se često koriste u WHERE i JOIN klauzulama
+--    • Poboljšavaju performansu upita
+
+-- =====================================================
+-- NAPOMENA: Za korišćenje ovog dijagrama:
+-- 1. Poseti https://mermaid.live/
+-- 2. Kopiraj sadržaj ovog fajla
+-- 3. Zalepi u editor i prilagodi prema potrebi
+-- 4. Preuzmi kao PNG, SVG ili PDF
+-- =====================================================
